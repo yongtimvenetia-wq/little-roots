@@ -168,7 +168,7 @@
   .badge-row{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 12px;}
 
   /* ---------- Callouts ---------- */
-  .callout{border-radius:var(--radius-sm);padding:16px 18px;margin:18px 0;border:1px solid;display:flex;gap:12px;align-items:flex-start;}
+  .callout{border-radius:var(--radius-sm);padding:16px 18px;margin:18px 0;border:1px solid;display:flex;gap:12px;align-items:center;}
   .callout .ic{font-size:1.2rem;line-height:1.4;flex:0 0 auto;}
   .callout.safety{background:var(--safe-bg);border-color:var(--safe-line);color:var(--safe-ink);}
   .callout.info{background:var(--info-bg);border-color:#ddd3e0;color:var(--info-ink);}
@@ -659,7 +659,7 @@
 
             <div class="disclaimer-pill" role="note">
               <span class="disc-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z"/><path d="M12 8.4v4.2M9.9 10.5h4.2"/></svg></span>
-              <p><strong>Educational only, not medical advice.</strong> Little Roots does not diagnose conditions or replace your pediatrician. For urgent symptoms, contact a doctor or emergency services. Always confirm care, feeding and health decisions with your child's healthcare provider.</p>
+              <p><strong>Educational only, not medical advice.</strong> Little Roots does not diagnose conditions or replace your pediatrician. Always confirm care decisions with your child's healthcare provider.</p>
             </div>
 
             <div class="scroll-cue-row">
@@ -827,6 +827,27 @@ const AGES = [
 ];
 const ageLabel = id => (AGES.find(a=>a.id===id)||{}).label || id;
 const ALL_AGE_IDS = AGES.map(a=>a.id);
+/* Clean "X to Y" range from a list of age-bucket ids (uses the lower bound of the
+   first bucket and the upper bound of the last, so no stacked dashes appear). */
+const AGE_BOUNDS = {
+  "newborn":["Newborn","Newborn"], "0-4w":["0 weeks","4 weeks"],
+  "1-2m":["1 month","2 months"], "3-4m":["3 months","4 months"],
+  "5-6m":["5 months","6 months"], "7-9m":["7 months","9 months"],
+  "10-12m":["10 months","12 months"], "13-18m":["13 months","18 months"],
+  "19-24m":["19 months","24 months"], "2y":["2 years","2 years"],
+  "3y":["3 years","3 years"], "4y":["4 years","4 years"],
+  "5y":["5 years","5 years"], "6y":["6 years","6 years"], "7y":["7 years","7 years"]
+};
+function ageRange(ids){
+  if(!ids || !ids.length) return "";
+  if(ids.length>=ALL_AGE_IDS.length) return "All ages";
+  const lo=(AGE_BOUNDS[ids[0]]||[ageLabel(ids[0]),ageLabel(ids[0])])[0];
+  const hi=(AGE_BOUNDS[ids[ids.length-1]]||[ageLabel(ids[ids.length-1]),ageLabel(ids[ids.length-1])])[1];
+  if(lo===hi) return lo;
+  const u=hi.split(" ").pop();
+  const loShort = lo.endsWith(" "+u) ? lo.slice(0, -(u.length+1)) : lo;
+  return `${loShort}–${hi}`;
+}
 
 /* ---------- Categories ---------- */
 const CATS = {
@@ -906,7 +927,7 @@ const CITES = {
   "what-to-look-toy": {title:"Toy Buying Tips for Babies & Young Children: AAP Report Explained", org:"American Academy of Pediatrics (HealthyChildren.org)", type:"Pediatric organization, parent guidance", url:"https://www.healthychildren.org/English/ages-stages/baby/Pages/What-to-Look-for-in-a-Toy.aspx", date:"Accessed 2026-06-29", note:"Choose safe, age-appropriate toys; avoid small parts and choking hazards; simple toys that encourage interaction are best."},
   "insect-bites-stings": {title:"Insect Bites and Stings", org:"American Academy of Pediatrics (HealthyChildren.org)", type:"Pediatric organization, parent guidance", url:"https://www.healthychildren.org/English/health-issues/conditions/from-insects-animals/Pages/insect-bites-and-stings.aspx", date:"Accessed 2026-06-30", note:"Scrape out a bee stinger, clean the area, and use cold compresses with a baking-soda paste or 1% hydrocortisone for itch and swelling; swelling can increase for about 48 hours."},
   "insect-sting-allergies": {title:"Insect Sting Allergies", org:"American Academy of Pediatrics (HealthyChildren.org)", type:"Pediatric organization, parent guidance", url:"https://www.healthychildren.org/English/health-issues/conditions/from-insects-animals/Pages/Insect-Sting-Allergies.aspx", date:"Accessed 2026-06-30", note:"Most stings cause only local pain and swelling; a child with a known severe sting allergy should get epinephrine right away after any sting and call 911."},
-  "anaphylaxis": {title:"Anaphylaxis in Infants & Children: Responding to Severe Allergic Reactions", org:"American Academy of Pediatrics (HealthyChildren.org)", type:"Pediatric organization, parent guidance", url:"https://www.healthychildren.org/English/health-issues/injuries-emergencies/Pages/Anaphylaxis.aspx", date:"Accessed 2026-06-30", note:"Severe whole-body reaction signs: trouble breathing, swelling of lips/tongue/throat, widespread hives, vomiting, pale or floppy — give epinephrine and call 911."},
+  "anaphylaxis": {title:"Anaphylaxis in Infants & Children: Responding to Severe Allergic Reactions", org:"American Academy of Pediatrics (HealthyChildren.org)", type:"Pediatric organization, parent guidance", url:"https://www.healthychildren.org/English/health-issues/injuries-emergencies/Pages/Anaphylaxis.aspx", date:"Accessed 2026-06-30", note:"Severe whole-body reaction signs: trouble breathing, swelling of lips/tongue/throat, widespread hives, vomiting, pale or floppy. Give epinephrine and call 911."},
   "insect-repellent": {title:"Choosing an Insect Repellent for Your Child", org:"American Academy of Pediatrics (HealthyChildren.org)", type:"Pediatric organization, parent guidance", url:"https://www.healthychildren.org/english/safety-prevention/at-play/pages/Insect-Repellents.aspx", date:"Accessed 2026-06-30", note:"DEET (10-30%) is considered safe over 2 months; do not use repellent on infants under 2 months (use netting); keep off hands, eyes and mouth."},
   "milestones-9m": {title:"Milestones by 9 Months", org:"Centers for Disease Control and Prevention (CDC), Learn the Signs. Act Early. (with the AAP)", type:"Public-health agency", url:"https://www.cdc.gov/act-early/milestones/9-months.html", date:"Accessed 2026-06-30", note:"By 9 months most babies sit without support, get to sitting on their own, babble strings like mamama/babababa, look when their name is called, are wary of strangers, and look for a hidden toy."},
   "milestones-1y": {title:"Milestones by 1 Year", org:"Centers for Disease Control and Prevention (CDC), Learn the Signs. Act Early. (with the AAP)", type:"Public-health agency", url:"https://www.cdc.gov/act-early/milestones/1-year.html", date:"Accessed 2026-06-30", note:"By 12 months many babies pull to stand and cruise, wave bye-bye, play pat-a-cake, say mama/dada and understand no."},
@@ -971,10 +992,10 @@ const CONTENT = [
    cites:["burping"]},
   {id:"allergen-introduction", cat:"feeding", title:"Introducing allergens to lower allergy risk", ages:R(4,8), sex:"all", montessori:false, status:"verified",
    excerpt:"Introducing common allergens early, around 6 months, and offering them regularly can lower your child's risk of food allergy.",
-   body:`<p>Pediatric guidance has changed: there is no reason to delay common allergenic foods, and introducing them <strong>early and regularly</strong> can actually lower the chance of developing a food allergy. The strongest evidence is for peanut, supported by the LEAP trial.</p>
+   body:`<p>Pediatric guidance has changed: there is no reason to delay common allergenic foods, and introducing them <strong>early and regularly</strong> can actually lower the chance of developing a food allergy. The strongest evidence is for peanut, supported by the <a href="https://www.foodallergy.org/resources/learning-early-about-peanut-allergy-leap" target="_blank" rel="noopener">LEAP trial</a>.</p>
    <ul><li>Start common allergens around 6 months, once your baby is developmentally ready for solids and tolerating a few first foods. Introduce one allergen at a time so any reaction is easy to spot.</li><li>Common allergens to include over time: peanut, egg, dairy, wheat, soy, tree nuts, fish, shellfish and sesame.</li><li><strong>Keep offering them.</strong> Building tolerance comes from regular, ongoing servings, not a single taste. (This steady, repeated exposure is the idea behind the "build tolerance" approach.)</li><li><strong>Serve safely:</strong> whole peanuts and nuts are a choking hazard under 4. Thin smooth peanut butter into warm water, breast milk, formula, yogurt or puree, or use a peanut puff that dissolves. Cook egg well.</li><li>Offer a new allergen earlier in the day at home, not right before bed, so you can watch your baby afterward.</li></ul>
-   <div class="callout safety" style="margin:14px 0 6px;"><span class="ic">⚠️</span><p><strong>Talk to your pediatrician first if your baby is higher risk</strong> — for example severe eczema or an existing egg allergy. They may advise testing or a supervised first taste before peanut is introduced.</p></div>
-   <div class="callout info" style="margin:6px 0 0;"><span class="ic">ℹ️</span><p><strong>A note on "macrodosing" / immunotherapy.</strong> Giving gradually increasing, measured doses of an allergen to build tolerance in a child who is <em>already allergic</em> is <strong>oral immunotherapy (OIT)</strong> — a medical treatment done only under an allergist's supervision, never at home. Early introduction described above is different: it is for babies without a known allergy, to help <em>prevent</em> one. Stop and seek care for any signs of a reaction (hives, swelling, vomiting, trouble breathing); call 911 for breathing difficulty.</p></div>`,
+   <div class="callout safety" style="margin:14px 0 6px;"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><p><strong>Talk to your pediatrician first if your baby is higher risk</strong>, for example severe eczema or an existing egg allergy. They may advise testing or a supervised first taste before peanut is introduced.</p></div>
+   <div class="callout info" style="margin:6px 0 0;"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--info-ink)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><circle cx="12" cy="7.6" r="1.1" fill="var(--info-ink)" stroke="none"></circle></svg></span><p><strong>A note on "macrodosing" / immunotherapy.</strong> Giving gradually increasing, measured doses of an allergen to build tolerance in a child who is <em>already allergic</em> is <strong>oral immunotherapy (OIT)</strong>, a medical treatment done only under an allergist's supervision, never at home. Early introduction described above is different: it is for babies without a known allergy, to help <em>prevent</em> one. Stop and seek care for any signs of a reaction (hives, swelling, vomiting, trouble breathing); call 911 for breathing difficulty.</p></div>`,
    cites:["allergen-intro","allergen-when","choking"]},
   {id:"vitamin-d", cat:"feeding", title:"Vitamin D for breastfed babies", ages:R(0,6), sex:"all", montessori:false, status:"verified",
    excerpt:"Breastfed and partially breastfed babies need 400 IU of vitamin D a day, starting in the first days of life.",
@@ -1017,7 +1038,7 @@ const CONTENT = [
   {id:"swaddling", cat:"sleep", title:"Swaddling safely", ages:R(0,3), sex:"all", montessori:false, status:"verified",
    excerpt:"Done correctly, swaddling can calm a newborn. Always swaddle on the back, keep it snug but not tight at the hips, and stop once baby tries to roll.",
    body:`<p>When done correctly, swaddling can help soothe a newborn and support sleep. The key is to keep all the safe-sleep rules in place.</p>
-   <ul><li><strong>Back only.</strong> Always place a swaddled baby on their back for every sleep, on a firm flat surface. A swaddled baby who rolls to their stomach is at higher risk of suffocation.</li><li><strong>Stop early.</strong> Stop swaddling as soon as your baby shows any sign of trying to roll over — often around 2 months, sometimes sooner.</li><li><strong>Snug, not tight at the hips.</strong> Wrap firmly around the arms but leave room for the legs to bend up and out. Tightly straightening and wrapping the legs can lead to hip problems (hip dysplasia).</li><li><strong>Don't overheat.</strong> Use a light blanket or wrap and watch for sweating, damp hair or flushing.</li><li>A wearable sleep sack that does <em>not</em> restrict the arms lets baby move freely and can be used for as long as you like.</li></ul>`,
+   <ul><li><strong>Back only.</strong> Always place a swaddled baby on their back for every sleep, on a firm flat surface. A swaddled baby who rolls to their stomach is at higher risk of suffocation.</li><li><strong>Stop early.</strong> Stop swaddling as soon as your baby shows any sign of trying to roll over, often around 2 months, sometimes sooner.</li><li><strong>Snug, not tight at the hips.</strong> Wrap firmly around the arms but leave room for the legs to bend up and out. Tightly straightening and wrapping the legs can lead to hip problems (hip dysplasia).</li><li><strong>Don't overheat.</strong> Use a light blanket or wrap and watch for sweating, damp hair or flushing.</li><li>A wearable sleep sack that does <em>not</em> restrict the arms lets baby move freely and can be used for as long as you like.</li></ul>`,
    cites:["swaddling","swaddling-how","safe-sleep"]},
   {id:"sleep-hours", cat:"sleep", title:"How much sleep your child needs", ages:A, sex:"all", montessori:false, status:"verified",
    excerpt:"Total daily sleep (including naps) by age, from the AAP and the American Academy of Sleep Medicine.",
@@ -1034,7 +1055,7 @@ const CONTENT = [
 
   /* ---------- Development ---------- */
   {id:"milestones", cat:"development", title:"How developmental milestones work", ages:A, sex:"all", montessori:false, status:"verified",
-   excerpt:"CDC checklists describe what most children (about 75%) do by a given age. A guide, not a test.",
+   excerpt:"<a href=\"https://www.cdc.gov/act-early/milestones/\" target=\"_blank\" rel=\"noopener\">CDC checklists</a> describe what most children (about 75%) do by a given age. A guide, not a test.",
    body:`<ul><li>There is a checklist for every well-child visit from 2 months to 5 years.</li><li>Use milestones to track progress and start conversations. Every child develops on their own timeline.</li><li>If your child is not meeting milestones, or loses skills, talk with your pediatrician early.</li></ul>`,
    cites:["milestones","milestones-checklist"]},
   {id:"tummy-time", cat:"development", title:"Tummy time", ages:R(1,4), sex:"all", montessori:false, status:"verified",
@@ -1061,7 +1082,7 @@ const CONTENT = [
    cites:["reading"]},
   {id:"montessori-environment", cat:"development", title:"Preparing a Montessori home environment", ages:A, sex:"all", montessori:true, status:"verified",
    excerpt:"A prepared environment makes real activities accessible and matched to your child's level.",
-   body:`<ul><li>Offer a few real, child-sized materials on low, open shelves rather than many toys at once.</li><li>Match activities to your child's interests and ability so they are challenging but achievable.</li><li>Allow extra time and let your child do things themselves, even when it is slower. Use the Montessori Home Setup tool for room-by-room ideas.</li></ul>`,
+   body:`<ul><li>Offer a few real, child-sized materials on low, open shelves rather than many toys at once.</li><li>Match activities to your child's interests and ability so they are challenging but achievable.</li><li>Allow extra time and let your child do things themselves, even when it is slower. Use the <a href="#tool-mont">Montessori Home Setup tool</a> for room-by-room ideas.</li></ul>`,
    cites:["montessori-practical"]},
   {id:"practical-life", cat:"development", title:"Practical life activities", ages:R(7,14), sex:"all", montessori:true, status:"verified",
    excerpt:"Everyday tasks like pouring, dressing and tidying build coordination, focus and independence.",
@@ -1103,9 +1124,9 @@ const CONTENT = [
    cites:["tantrums","discipline"]},
 
   /* ---------- Health & Safety ---------- */
-  {id:"fever-under3", cat:"health", title:"Fever in a baby under 3 months", ages:R(0,2), sex:"all", montessori:false, status:"verified",
+  {id:"fever-under3", cat:"health", title:"Fever in a baby under 3 months", ages:R(0,2), sex:"all", montessori:false, status:"verified", hideExcerptInCard:true,
    excerpt:"Any temperature of 100.4F (38C) or higher in a baby under 3 months is urgent. Call your pediatrician.",
-   body:`<div class="callout safety" style="margin:0 0 10px;"><span class="ic">🚨</span><p><strong>Urgent:</strong> A fever of <strong>100.4F (38C) or higher</strong> in an infant under 3 months needs prompt medical attention. Call your pediatrician and do not give fever medicine before they are seen.</p></div><ul><li>At this age it is very hard to tell a minor illness from a serious infection, so let a clinician evaluate.</li><li>Also seek care for a baby who looks very ill, is very drowsy or very fussy, or has trouble breathing.</li></ul>`,
+   body:`<div class="callout safety" style="margin:0 0 10px;"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><p><strong>Urgent:</strong> A fever of <strong>100.4F (38C) or higher</strong> in an infant under 3 months needs prompt medical attention. Call your pediatrician and do not give fever medicine before they are seen.</p></div><ul><li>At this age it is very hard to tell a minor illness from a serious infection, so let a clinician evaluate.</li><li>Also seek care for a baby who looks very ill, is very drowsy or very fussy, or has trouble breathing.</li></ul>`,
    cites:["fever"]},
   {id:"fever-general", cat:"health", title:"Fever: when to call the doctor", ages:A, sex:"all", montessori:false, status:"verified",
    excerpt:"How a child looks and acts matters as much as the number. Know the signs that warrant a call.",
@@ -1132,20 +1153,20 @@ const CONTENT = [
    excerpt:"Keep babies under 6 months out of direct sun. For all ages, shade, hats and clothing come first, with sunscreen to fill the gaps.",
    body:`<p><strong>Babies under 6 months:</strong> keep them out of direct sunlight. Use shade from a tree, umbrella or stroller canopy, and dress them in lightweight clothing that covers arms and legs plus a brimmed hat. If shade and clothing are not enough, you can apply a small amount of sunscreen to exposed areas like the face and backs of the hands.</p>
    <p><strong>Babies 6 months and older, and all children:</strong></p>
-   <ul><li>Seek shade and avoid peak sun (about 10am to 4pm) when you can.</li><li>Use a <strong>broad-spectrum</strong> sunscreen with <strong>SPF 30 or higher</strong>. For babies and sensitive skin, mineral sunscreens with <strong>zinc oxide or titanium dioxide</strong> are gentlest.</li><li>Apply about 15 to 30 minutes before going out, and reapply every 2 hours and after swimming or sweating.</li><li>Keep covering up with hats, sunglasses and clothing — sunscreen alone is not enough.</li><li>Babies overheat easily; offer extra breast milk or formula on hot days and watch for signs of too much heat.</li></ul>
-   <div class="callout note" style="margin:14px 0 0;"><span class="ic">📝</span><p>A few bad sunburns in childhood raise the long-term risk of skin cancer, so sun protection is a daily habit worth starting early. Note: the FDA has not formally approved sunscreen for babies under 6 months, but the AAP supports careful, small-area use when shade and clothing are not available.</p></div>`,
+   <ul><li>Seek shade and avoid peak sun (about 10am to 4pm) when you can.</li><li>Use a <strong>broad-spectrum</strong> sunscreen with <strong>SPF 30 or higher</strong>. For babies and sensitive skin, mineral sunscreens with <strong>zinc oxide or titanium dioxide</strong> are gentlest.</li><li>Apply about 15 to 30 minutes before going out, and reapply every 2 hours and after swimming or sweating.</li><li>Keep covering up with hats, sunglasses and clothing. Sunscreen alone is not enough.</li><li>Babies overheat easily; offer extra breast milk or formula on hot days and watch for signs of too much heat.</li></ul>
+   <div class="callout note" style="margin:14px 0 0;"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--ink-soft)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"></path><path d="M10 21h4"></path><path d="M12 3a6 6 0 0 0-3.6 10.8c.5.4.8 1 .9 1.6l.1.6h5.2l.1-.6c.1-.6.4-1.2.9-1.6A6 6 0 0 0 12 3Z"></path></svg></span><p>A few bad sunburns in childhood raise the long-term risk of skin cancer, so sun protection is a daily habit worth starting early. Note: the FDA has not formally approved sunscreen for babies under 6 months, but the AAP supports careful, small-area use when shade and clothing are not available.</p></div>`,
    cites:["sun-safety","baby-sunburn"]},
   {id:"bee-stings", cat:"health", title:"Bee and wasp stings", ages:A, sex:"all", montessori:false, status:"verified",
-   excerpt:"Scrape out the stinger quickly, then cool and soothe the spot. Most stings just hurt and swell — but know the emergency signs of an allergic reaction.",
-   body:`<div class="callout safety" style="margin:0 0 12px;"><span class="ic">🚨</span><p><strong>Call 911 right away</strong> if your child has trouble breathing, swelling of the lips, tongue, throat or face, widespread hives, repeated vomiting, dizziness or floppiness, or a sting inside the mouth or throat. If your child has a known severe sting allergy, give their <strong>epinephrine auto-injector first</strong>, then call 911 — even if symptoms seem mild at first.</p></div>
+   excerpt:"Scrape out the stinger quickly, then cool and soothe the spot. Most stings just hurt and swell, but know the emergency signs of an allergic reaction.",
+   body:`<div class="callout safety" style="margin:0 0 12px;"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><p><strong>Call 911 right away</strong> if your child has trouble breathing, swelling of the lips, tongue, throat or face, widespread hives, repeated vomiting, dizziness or floppiness, or a sting inside the mouth or throat. If your child has a known severe sting allergy, give their <strong>epinephrine auto-injector first</strong>, then call 911, even if symptoms seem mild at first.</p></div>
    <p><strong>For a normal sting (pain and swelling only):</strong></p>
    <ul><li><strong>Remove the stinger fast.</strong> Scrape it out sideways with a fingernail, credit-card edge or piece of tape. Do not pinch it with tweezers, which can squeeze in more venom. If a tiny piece stays under the skin, it is fine to leave it.</li><li><strong>Clean</strong> the area with soap and water.</li><li><strong>Cool and soothe.</strong> Apply a cold compress. A baking-soda paste or 1% hydrocortisone cream eases itch and swelling; an oral antihistamine can help itching.</li><li><strong>Pain relief:</strong> acetaminophen or ibuprofen, dosed for your child's age and weight, if needed.</li><li><strong>What's normal:</strong> swelling can keep increasing for about 48 hours, redness can last up to 3 days and swelling up to a week. Call your pediatrician if redness, warmth or swelling spreads or oozes after a couple of days (possible infection).</li></ul>`,
    cites:["insect-bites-stings","insect-sting-allergies","anaphylaxis"]},
   {id:"insect-bites", cat:"health", title:"Insect bites and bug protection", ages:A, sex:"all", montessori:false, status:"verified",
-   excerpt:"Most bites are itchy but harmless. Clean, cool and soothe them — and use repellent safely to prevent them.",
+   excerpt:"Most bites are itchy but harmless. Clean, cool and soothe them, and use repellent safely to prevent them.",
    body:`<ul><li><strong>Treating a bite:</strong> wash with soap and water, apply a cold compress, and use a baking-soda paste or 1% hydrocortisone cream for itch. Keep nails short and discourage scratching, which can lead to infection.</li><li><strong>When to call the doctor:</strong> spreading redness or warmth, pus, fever, or a bite that looks infected after a day or two; or any signs of a severe allergic reaction (see the sting card).</li></ul>
    <p><strong>Preventing bites with repellent:</strong></p>
-   <ul><li><strong>Under 2 months:</strong> do not use insect repellent. Use mosquito netting over the stroller or carrier instead.</li><li><strong>2 months and older:</strong> products with <strong>DEET 10–30%</strong> are considered safe; higher percentages last longer but are not stronger. Apply once a day.</li><li>Spray onto your own hands first, then onto your child — avoid their hands, eyes and mouth. Wash it off when you come indoors.</li><li>Dress in lightweight long sleeves and pants in buggy areas, and avoid scented soaps and lotions that attract insects.</li></ul>`,
+   <ul><li><strong>Under 2 months:</strong> do not use insect repellent. Use mosquito netting over the stroller or carrier instead.</li><li><strong>2 months and older:</strong> products with <strong>DEET 10–30%</strong> are considered safe; higher percentages last longer but are not stronger. Apply once a day.</li><li>Spray onto your own hands first, then onto your child. Avoid their hands, eyes and mouth. Wash it off when you come indoors.</li><li>Dress in lightweight long sleeves and pants in buggy areas, and avoid scented soaps and lotions that attract insects.</li></ul>`,
    cites:["insect-bites-stings","insect-repellent","anaphylaxis"]}
 ];
 
@@ -1153,7 +1174,7 @@ const CONTENT = [
 const CARE_PRIORITIES = {
   "newborn": {items:[
     {s:"Feed on demand, often 8 to 12 times a day, and watch wet diapers as a sign of enough intake.",
-     d:"That works out to roughly every 2 to 3 hours. In the early weeks, do not let a newborn go longer than about 3 to 4 hours without a feed, even overnight. Wake them to feed until they are back to birth weight and your pediatrician says longer stretches are fine. Expect about 6 or more wet diapers a day once feeding is well established, whether by breast or bottle, around day 5 to 6; fewer than that is worth a call to your pediatrician."},
+     d:"That usually means feeding every 2 to 3 hours. In the early weeks, do not let a newborn go longer than about 3 to 4 hours without feeding, even overnight. Wake them to feed until they are back to birth weight and your pediatrician says longer stretches are okay. Once feeding is well established, usually by day 5 or 6 after birth, expect about 6 or more wet diapers a day. If your baby has fewer than that, contact your pediatrician."},
     {s:"Back to sleep every time, on a firm flat surface, room-sharing without bed-sharing.",
      d:"Place baby on their back for every sleep, on a firm flat surface with no pillows, blankets, bumpers or soft toys. Sharing a room (but not a bed) is recommended for the first 6 to 12 months."},
     {s:"Keep the umbilical cord clean and dry.",
@@ -1491,12 +1512,11 @@ function renderCites(ids){
 }
 function citesFor(item){ return renderCites(item.cites); }
 function contentCardHTML(item){
-  const ages = item.ages.length>=ALL_AGE_IDS.length ? "All ages" :
-    `${ageLabel(item.ages[0])}–${ageLabel(item.ages[item.ages.length-1])}`;
+  const ages = ageRange(item.ages);
   return `<div class="card content-card" id="content-${item.id}">
     <h3>${item.title}</h3>
     <div class="badge-row"><span class="badge age">${ages}</span></div>
-    <div class="excerpt">${item.excerpt}</div>
+    ${item.hideExcerptInCard ? "" : `<div class="excerpt">${item.excerpt}</div>`}
     <div class="body">${item.body}</div>
     ${citesFor(item)}
   </div>`;
@@ -1521,9 +1541,7 @@ function stageOf(item){
   return st ? st.id : "all";
 }
 function ageTag(item){
-  if(item.ages.length>=ALL_AGE_IDS.length) return "All ages";
-  const a=item.ages;
-  return a.length===1 ? ageLabel(a[0]) : `${ageLabel(a[0])}–${ageLabel(a[a.length-1])}`;
+  return ageRange(item.ages);
 }
 function railCardHTML(item, open){
   return `<details class="topic-card"${open?" open":""} id="content-${item.id}">
@@ -1743,7 +1761,7 @@ function roadmapHTML(key){
     m.querySelector("#rmModalTitle").textContent=info.title;
     m.querySelector(".rm-modal-body").innerHTML=
       info.body
-      + `<div class="rm-modal-disc"><span aria-hidden="true">⚕️</span><span>This is educational information, not a diagnosis. If anything worries you, contact your pediatrician.</span></div>`
+      + `<div class="rm-modal-disc"><span aria-hidden="true" style="display:flex;align-items:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><span>This is educational information, not a diagnosis. If anything worries you, contact your pediatrician.</span></div>`
       + (typeof renderCites==="function" ? renderCites(info.cites) : "");
     lastFocus=document.activeElement;
     m.hidden=false;
@@ -1832,7 +1850,7 @@ function buildCategoryPage(key){
   wireNavLinks(el);
 }
 function safetyCalloutFor(key){
-  if(key==="health") return `<div class="callout safety"><span class="ic">⚕️</span><p><strong>This is educational content, not a replacement for care.</strong> For emergencies or urgent symptoms (e.g., trouble breathing, seizures, a fever in a baby under 3 months), contact a doctor right away.</p></div>`;
+  if(key==="health") return `<div class="callout safety"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><p><strong>This is educational content, not a replacement for care.</strong> For emergencies or urgent symptoms (e.g., trouble breathing, seizures, a fever in a baby under 3 months), contact a doctor right away.</p></div>`;
   return "";
 }
 /* ----- Browse by Age ----- */
@@ -1849,11 +1867,11 @@ function renderBrowse(age){
   const box=$("#browseContent");
   if(!age){ box.innerHTML=""; return; }
   const cp = CARE_PRIORITIES[age];
-  let html=`<h2 style="margin-top:6px;">Guidance for ${ageLabel(age)}</h2>
+  let html=`<h2 style="margin-top:6px;">Guidance for ${ageRange([age])}</h2>
     <div class="callout note"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.33rem;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blush)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.6" r="0.6" fill="var(--blush)" stroke="none"/></svg></span><p>All guidance below is drawn from this guide's reviewed, cited content. Always confirm decisions with your pediatrician.</p></div>
     <section class="block"><h3>Care priorities</h3>
       <div class="card content-card">
-        <div class="badge-row"><span class="badge age">${ageLabel(age)}</span></div>
+        <div class="badge-row"><span class="badge age">${ageRange([age])}</span></div>
         <div class="body">${cp ? renderPriorities(cp) : "<p class='placeholder-note'>Summary coming soon.</p>"}</div>
         ${cp ? renderCites(cp.cites) : ""}
       </div>
@@ -1869,19 +1887,13 @@ function renderBrowse(age){
   });
   // When to ask a pediatrician + related tools
   html+=`<section class="block"><h3>When to ask a pediatrician</h3>
-    <div class="callout safety"><span class="ic">⚕️</span><p>Always check in if you're worried, if your child isn't meeting milestones or loses skills, has feeding or growth concerns, or has any urgent symptoms. This guide is educational and doesn't replace your pediatrician.</p></div></section>`;
-  html+=`<section class="block"><h3>Related tools & downloads</h3>
-    <div class="grid cols-3">
-      <a class="quick" href="#tool-meal"><div class="card">${iconChip("tools")}<div><h3>Helpful Tools</h3><p>Schedule builders, meal ideas and more.</p></div></div></a>
-      <a class="quick" href="#downloads" data-nav="downloads"><div class="card">${iconChip("downloads")}<div><h3>Downloadables</h3><p>Trackers and checklists to print.</p></div></div></a>
-      <a class="quick" href="#sources" data-nav="sources"><div class="card">${iconChip("sources")}<div><h3>Sources</h3><p>See where this guidance comes from.</p></div></div></a>
-    </div></section>`;
+    <div class="callout safety"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;color:var(--safe-ink);font-size:1.25rem;line-height:1;">⚕</span><p>Always check in if you're worried, if your child isn't meeting milestones or loses skills, has feeding or growth concerns, or has any urgent symptoms.</p></div></section>`;
   box.innerHTML=html;
   wireNavLinks(box);
 }
 
 /* ============================================================
-   Downloadable spreadsheets — dependency-free .xlsx generator.
+   Downloadable spreadsheets: dependency-free .xlsx generator.
    Builds a real Excel file in the browser (store-method zip +
    CRC32 + OOXML XML). No libraries, so the site stays a single
    self-contained file that works offline.
@@ -1972,7 +1984,7 @@ const TEMPLATES = {
     const headers=["Date","Time","Method","Side / Type","Amount (oz)","Duration (min)","Wet diaper","Dirty diaper","Notes"];
     const H=h=>({v:h,t:'s',s:3}), C=(v,t)=>({v,t:t||'s',s:4});
     const rows=[];
-    rows.push([{v:"Little Roots — Feeding Tracker",t:'s',s:1}]);
+    rows.push([{v:"Little Roots Feeding Tracker",t:'s',s:1}]);
     rows.push([{v:"Baby:  __________      Week of:  __________      Vitamin D given daily?  Y / N",t:'s',s:2}]);
     rows.push([]);
     rows.push(headers.map(H));
@@ -2093,7 +2105,7 @@ const SEARCH_PAGE_SIZE=10;
 let _searchHits=[], _searchPage=1;
 
 function searchCardHTML(i){
-  const ages=i.ages.length>=ALL_AGE_IDS.length?"All ages":`${ageLabel(i.ages[0])}–${ageLabel(i.ages[i.ages.length-1])}`;
+  const ages=ageRange(i.ages);
   const cite=(i.cites&&i.cites.length)?"":`<span class="badge todo">sources TODO</span>`;
   return `<div class="card content-card">
     <div class="badge-row"><span class="badge cat">${CATS[i.cat].label}</span><span class="badge age">${ages}</span>${cite}</div>
@@ -2502,7 +2514,7 @@ function toolMeal(){
   $("#meal-out").innerHTML=`<p style="margin:.2em 0 .4em"><strong>${tex} ideas</strong> for ${ageLabel(age)}${grp!=="Any"?` · ${grp}`:""}${diet!=="No restriction"?` · ${diet}`:""}${goal!=="Any"?` · ${goal}`:""}:</p>
     ${note?`<p class="muted" style="margin:.2em 0 .4em;font-size:.9rem">${note}</p>`:""}
     <ul class="pill-list">${ideas.map(i=>`<li>${i.n}</li>`).join("")}</ul>
-    <div class="callout safety" style="margin:12px 0 0"><span class="ic">⚠️</span><p><strong>Choking safety:</strong> always supervise eating, cut foods small and soft, and skip hard/round foods. For allergies or any medical feeding concern, check with your pediatrician. <em>Sample ideas, to be expanded with citations.</em></p></div>`;
+    <div class="callout safety" style="margin:12px 0 0"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><p><strong>Choking safety:</strong> always supervise eating, cut foods small and soft, and skip hard/round foods. For allergies or any medical feeding concern, check with your pediatrician. <em>Sample ideas, to be expanded with citations.</em></p></div>`;
 }
 /* Montessori setup ideas are banded by developmental stage so they stay
    age-appropriate. A 2-month-old's space is adult-prepared (movement, senses);
@@ -2567,7 +2579,7 @@ function toolMont(){
   $("#mont-out").innerHTML=`<p style="margin:.2em 0 .4em"><strong>${room} · ${goal}</strong> for ${ageLabel(age)} (${budget}):</p>
     ${infantNote}
     <ul class="pill-list">${ideas.map(i=>`<li>${i}</li>`).join("")}</ul>
-    <div class="callout safety" style="margin:12px 0 0"><span class="ic">⚠️</span><p><strong>Safety:</strong> anchor furniture to the wall, keep hazards out of reach, and supervise water and kitchen activities. <em>Sample ideas, to be expanded with respected Montessori citations.</em></p></div>`;
+    <div class="callout safety" style="margin:12px 0 0"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><p><strong>Safety:</strong> anchor furniture to the wall, keep hazards out of reach, and supervise water and kitchen activities. <em>Sample ideas, to be expanded with respected Montessori citations.</em></p></div>`;
 }
 function toolFeed(){
   const age=$("#fs-age").value, type=$("#fs-type").value;
@@ -2580,7 +2592,7 @@ function toolFeed(){
   $("#fs-out").className="result";
   $("#fs-out").innerHTML=`<p style="margin:.2em 0 .6em"><strong>Sample ${type} rhythm</strong> · ${ageLabel(age)}:</p>
     ${rows.map(r=>`<div class="schedule-row"><span class="t">${r[0]}</span><span>${r[1]}</span></div>`).join("")}
-    <div class="callout safety" style="margin:12px 0 0"><span class="ic">⚕️</span><p>A general example only. Babies feed on their own cues. <strong>Confirm any feeding plan with your pediatrician.</strong></p></div>`;
+    <div class="callout safety" style="margin:12px 0 0"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><p>A general example only. Babies feed on their own cues. <strong>Confirm any feeding plan with your pediatrician.</strong></p></div>`;
 }
 // Map every age id to a life-stage band so questions can be tailored.
 function pedBand(id){
@@ -2741,7 +2753,7 @@ function toolAct(){
     ${infantNote}
     <ul class="pill-list">${acts.map(a=>`<li><strong>${a}</strong></li>`).join("")}</ul>
     <p class="muted" style="font-size:.9rem;margin:.6em 0 0"><strong>Materials:</strong> simple, real, age-appropriate objects. <strong>Purpose:</strong> builds ${skill.toLowerCase()} at this stage. Select <strong>Find activities</strong> again for a fresh set.</p>
-    <div class="callout safety" style="margin:12px 0 0"><span class="ic">⚠️</span><p><strong>Safety:</strong> supervise closely, choose choking-safe materials, and follow your child's lead. <em>Sample Montessori-aligned ideas, to be expanded with citations.</em></p></div>`;
+    <div class="callout safety" style="margin:12px 0 0"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3.6c.66 0 1.27.35 1.6.92l7.1 12.3a1.85 1.85 0 0 1-1.6 2.78H4.9a1.85 1.85 0 0 1-1.6-2.78l7.1-12.3c.33-.57.94-.92 1.6-.92Z" fill="var(--safe-ink)"></path><path d="M12 9.4v3.9" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="16.2" r="1.15" fill="#fff"></circle></svg></span><p><strong>Safety:</strong> supervise closely, choose choking-safe materials, and follow your child's lead. <em>Sample Montessori-aligned ideas, to be expanded with citations.</em></p></div>`;
 }
 
 /* ============================================================
