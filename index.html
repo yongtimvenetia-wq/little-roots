@@ -105,38 +105,47 @@
   }
   .nav-dd-toggle:hover{background:var(--blush-tint);color:var(--blush);}
   .nav-dd-toggle .caret{
-    width:.62em;height:.62em;flex:0 0 auto;margin-top:1px;
-    border-right:2px solid currentColor;border-bottom:2px solid currentColor;
-    transform:rotate(45deg);transition:transform .2s;opacity:.65;
+    width:15px;height:15px;flex:0 0 auto;
+    transform:rotate(180deg);transform-origin:center;transition:transform .2s ease;opacity:.7;
   }
   .nav-dd-toggle:hover .caret{opacity:1;}
   .nav-dd-toggle.active,.nav-dd.open .nav-dd-toggle{background:var(--blush);color:#fff;font-weight:700;}
-  .nav-dd.open .nav-dd-toggle .caret{transform:rotate(-135deg);margin-top:4px;opacity:1;}
+  .nav-dd.open .nav-dd-toggle .caret{transform:rotate(0deg);opacity:1;}
   .nav-dd-menu{
-    display:none;position:absolute;top:calc(100% + 6px);left:0;min-width:236px;z-index:200;
+    display:none;position:absolute;top:calc(100% + 6px);left:0;min-width:252px;z-index:200;
     background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:6px;
   }
   .nav-dd.open .nav-dd-menu{display:block;}
   .nav-dd-menu a{
-    display:flex;align-items:center;gap:10px;text-decoration:none;color:#5e4f47;font-weight:600;
-    font-size:.88rem;padding:9px 11px;border-radius:10px;white-space:nowrap;
+    display:flex;align-items:center;gap:12px;text-decoration:none;color:#5e4f47;font-weight:600;
+    font-size:.88rem;padding:8px 10px;border-radius:12px;white-space:nowrap;
   }
   .nav-dd-menu a:hover{background:var(--blush-tint);color:var(--blush);}
   .nav-dd-menu a.active{background:var(--blush);color:#fff;}
   .nav-dd-menu .dd-emoji{font-size:1.05rem;width:1.3em;text-align:center;}
+  /* Shared colored icon chip (nav dropdown, tool switcher, tool title) */
+  .tool-ic{
+    flex:0 0 auto;width:34px;height:34px;border-radius:11px;border:1px solid;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .tool-ic svg{width:19px;height:19px;}
+  .tool-ic.sm{width:23px;height:23px;border-radius:7px;}
+  .tool-ic.sm svg{width:14px;height:14px;}
+  .tool-ic.lg{width:46px;height:46px;border-radius:14px;vertical-align:-0.28em;}
+  .tool-ic.lg svg{width:26px;height:26px;}
   @media (max-width:920px){
     .nav-dd{width:100%;}
     .nav-dd-toggle{width:100%;justify-content:space-between;padding:12px;font-size:1rem;border-radius:12px;}
-    .nav-dd-toggle .caret{width:.55em;height:.55em;margin-right:4px;}
-    .nav-dd.open .nav-dd-toggle .caret{margin-top:1px;}
+    .nav-dd-toggle .caret{width:16px;height:16px;}
     .nav-dd-menu{position:static;box-shadow:none;border:0;border-left:2px solid var(--blush-tint);border-radius:0;margin:6px 0 4px 6px;padding:2px 0 4px 12px;min-width:0;}
     .nav-dd-menu a{font-size:.95rem;padding:11px 10px;}
   }
   /* ---------- Tool switcher (on tool pages) ---------- */
   .tool-switcher{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;}
   .tool-switch{
+    display:inline-flex;align-items:center;gap:7px;
     text-decoration:none;font-size:.85rem;font-weight:600;color:#5e4f47;white-space:nowrap;
-    background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:7px 13px;transition:.15s;
+    background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:6px 13px 6px 7px;transition:.15s;
   }
   .tool-switch:hover{background:var(--blush-tint);color:var(--blush);border-color:var(--blush-tint);}
   .tool-switch.active{background:var(--blush);color:#fff;border-color:var(--blush);}
@@ -273,15 +282,15 @@
   /* Browse by Age header */
   .browse-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;flex-wrap:wrap;}
   .browse-head-text{flex:1 1 420px;min-width:0;}
-  .browse-eyebrow{display:inline-flex;align-items:center;gap:7px;margin:0 0 10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.72rem;color:var(--blush);}
+  .browse-eyebrow-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 10px;}
+  .browse-eyebrow{display:inline-flex;align-items:center;gap:7px;margin:0;font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:.72rem;color:var(--blush);}
   .browse-eyebrow svg{width:14px;height:14px;opacity:.85;}
   .browse-head h1{font-size:clamp(2.4rem,5vw,3.5rem);margin-bottom:.18em;}
   .browse-head .sub{font-size:1.08rem;line-height:1.55;}
-  .browse-badge{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;align-self:flex-end;margin-bottom:6px;
-    background:rgba(255,255,255,.3);color:var(--ink-soft);font-weight:600;font-size:.88rem;
-    padding:8px 14px;border-radius:10px;border:1px solid rgba(122,92,80,.14);box-shadow:none;}
-  .browse-badge svg{width:16px;height:16px;color:#5a8a5f;flex:0 0 auto;}
-  @media(max-width:720px){.browse-badge{align-self:flex-start;margin-bottom:0;}}
+  .browse-badge{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;
+    background:rgba(255,255,255,.3);color:var(--ink-soft);font-weight:600;font-size:.8rem;
+    padding:5px 11px;border-radius:8px;border:1px solid rgba(122,92,80,.14);box-shadow:none;}
+  .browse-badge svg{width:14px;height:14px;color:#5a8a5f;flex:0 0 auto;}
   section.block{padding:18px 0 30px;}
 
   /* ---------- Age selector ---------- */
@@ -506,7 +515,7 @@
   .cat-detail-head .rule{height:1px;flex:1;background:rgba(126,108,84,.22);}
   .cat-detail-head .cnt{flex-shrink:0;font-size:.82rem;font-weight:700;color:#9b8a76;}
   /* Masonry column flow: cards pack vertically so an expanded card reflows
-     around its neighbours instead of leaving big empty gaps in a fixed grid. */
+     around its neighbors instead of leaving big empty gaps in a fixed grid. */
   .topic-grid{column-width:285px;column-gap:clamp(14px,1.4vw,22px);}
   .topic-card{background:var(--surface);border:1px solid rgba(126,108,84,.14);border-radius:18px;box-shadow:0 18px 40px -34px rgba(74,42,38,.5);overflow:hidden;width:100%;margin:0 0 14px;break-inside:avoid;-webkit-column-break-inside:avoid;}
   .topic-card>summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;}
@@ -536,7 +545,43 @@
   @media (max-width:760px){
     .cat-rail{position:static;flex:1 1 100%;max-width:none;}
     .rail-list{flex-direction:row;flex-wrap:wrap;}
-    .rail-btn{width:auto;}
+    .rail-btn{width:auto;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;box-shadow:0 1px 2px rgba(74,42,38,.06);}
+    .rail-btn:hover{background:var(--blush-tint);}
+    .rail-btn.active{border-color:transparent;}
+  }
+
+  /* ---------- Browse-by-Age quick guide (sticky jump nav, all devices) ---------- */
+  .browse-quickguide{
+    display:flex;align-items:center;gap:11px;
+    position:sticky;top:var(--bqg-top,64px);z-index:60;
+    margin:6px 0 16px;padding:14px 24px;border-radius:var(--radius);
+    background:rgba(247,239,231,.95);backdrop-filter:saturate(1.1) blur(10px);
+    border:1px solid rgba(158,85,99,.14);
+    box-shadow:0 8px 16px -14px rgba(92,64,51,.6);
+  }
+  .bqg-label{flex:0 0 auto;font-size:.7rem;font-weight:800;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--blush);}
+  .bqg-chips{display:flex;flex-wrap:wrap;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;padding-bottom:1px;}
+  .bqg-chips::-webkit-scrollbar{display:none;}
+  .bqg-chip{
+    flex:0 0 auto;white-space:nowrap;cursor:pointer;font-family:inherit;
+    background:var(--surface);border:1px solid var(--line);border-radius:999px;
+    padding:7px 14px;font-size:.86rem;font-weight:600;color:#5e4f47;transition:.15s;
+  }
+  .bqg-chip:hover,.bqg-chip.active{background:var(--blush);border-color:var(--blush);color:#fff;}
+  @media (max-width:760px){
+    .browse-quickguide{gap:9px;margin:2px 0 14px;padding:12px 18px;}
+    .bqg-chips{flex-wrap:nowrap;gap:7px;}
+    .bqg-label{font-size:.68rem;}
+    .bqg-chip{padding:7px 13px;font-size:.82rem;}
+  }
+  /* Balance the Browse-by-Age containers: same edges, inset (24px) and radius
+     as the cards, plus even vertical rhythm. Scoped so other callouts are untouched. */
+  #browseContent .callout{border-radius:var(--radius);padding:18px 24px;margin:0 0 16px;align-items:flex-start;}
+  #browseContent .callout .ic{margin-top:1px;}
+  @media (max-width:760px){
+    #browseContent .callout{padding:16px 18px;}
   }
 
   /* ---------- Milestone roadmap (horizontal scroll timeline) ---------- */
@@ -620,7 +665,7 @@
       <a href="#behavior" data-nav="behavior">Behavior</a>
       <a href="#health" data-nav="health">Health &amp; Safety</a>
       <div class="nav-dd" id="toolsDd">
-        <button type="button" class="nav-dd-toggle" id="toolsDdToggle" aria-haspopup="true" aria-expanded="false">Tools <span class="caret" aria-hidden="true"></span></button>
+        <button type="button" class="nav-dd-toggle" id="toolsDdToggle" aria-haspopup="true" aria-expanded="false">Tools <svg class="caret" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg></button>
         <div class="nav-dd-menu" id="toolsDdMenu" role="menu" aria-label="Tools"></div>
       </div>
       <a href="#search" data-nav="search">Search</a>
@@ -694,17 +739,19 @@
   <div class="wrap">
     <div class="page-head browse-head">
       <div class="browse-head-text">
-        <p class="browse-eyebrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          15 Stages · Newborn to 7 Years
-        </p>
+        <div class="browse-eyebrow-row">
+          <p class="browse-eyebrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            15 Stages · Newborn to 7 Years
+          </p>
+          <span class="browse-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Every stage is citation-backed
+          </span>
+        </div>
         <h1>Browse by Age</h1>
         <p class="sub" style="max-width:none;">Pick a stage to see everything in one place: care priorities, feeding, sleep, milestones, Montessori activities, behavior, safety, and when to ask a pediatrician.</p>
       </div>
-      <span class="browse-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-        Every stage is citation-backed
-      </span>
     </div>
     <div class="age-select-wrap" id="browseAges"></div>
     <div id="browseContent" style="margin-top:18px;"></div>
@@ -1862,34 +1909,101 @@ const AGE_SECTIONS = [
   ["Behavior & emotional development","behavior"],
   ["Safety considerations","health"],
 ];
+/* Short chip labels for the mobile quick-guide, keyed by the AGE_SECTIONS heading. */
+const AGE_SECTION_SHORT = {
+  "Feeding guidance":"Feeding",
+  "Sleep & nap expectations":"Sleep",
+  "Developmental milestones":"Milestones",
+  "Montessori-aligned activities":"Montessori",
+  "Behavior & emotional development":"Behavior",
+  "Safety considerations":"Safety"
+};
 function renderBrowse(age){
   renderAgePills($("#browseAges"), renderBrowse);
   const box=$("#browseContent");
   if(!age){ box.innerHTML=""; return; }
   const cp = CARE_PRIORITIES[age];
+
+  // Build the mobile quick-guide chip list in the same order sections render.
+  const navSecs=[{id:"bsec-care", short:"Care"}];
+  AGE_SECTIONS.forEach(([heading],i)=>navSecs.push({id:"bsec-"+i, short:AGE_SECTION_SHORT[heading]||heading}));
+  const quickGuide=`<nav class="browse-quickguide" aria-label="Jump to a section">
+      <span class="bqg-label">Quick guide</span>
+      <div class="bqg-chips">${navSecs.map(s=>`<button type="button" class="bqg-chip" data-target="${s.id}">${s.short}</button>`).join("")}</div>
+    </nav>`;
+
   let html=`<h2 style="margin-top:6px;">Guidance for ${ageRange([age])}</h2>
     <div class="callout note"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.33rem;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blush)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.6" r="0.6" fill="var(--blush)" stroke="none"/></svg></span><p>All guidance below is drawn from this guide's reviewed, cited content. Always confirm decisions with your pediatrician.</p></div>
-    <section class="block"><h3>Care priorities</h3>
+    ${quickGuide}
+    <section class="block" id="bsec-care"><h3>Care priorities</h3>
       <div class="card content-card">
         <div class="badge-row"><span class="badge age">${ageRange([age])}</span></div>
         <div class="body">${cp ? renderPriorities(cp) : "<p class='placeholder-note'>Summary coming soon.</p>"}</div>
         ${cp ? renderCites(cp.cites) : ""}
       </div>
     </section>`;
-  AGE_SECTIONS.forEach(([heading,cat])=>{
+  AGE_SECTIONS.forEach(([heading,cat],i)=>{
     const items=CONTENT.filter(i=>i.cat===cat && i.ages.includes(age) &&
       (heading.startsWith("Montessori")? i.montessori : true) &&
       (heading==="Developmental milestones"? !i.montessori : true));
-    html+=`<section class="block"><h3>${heading}</h3>`;
+    html+=`<section class="block" id="bsec-${i}"><h3>${heading}</h3>`;
     html+= items.length ? `<div class="grid cols-2">${items.map(contentCardHTML).join("")}</div>`
       : `<div class="card"><p class="muted">More on this area is on the topic pages in the menu above.</p></div>`;
     html+=`</section>`;
   });
   // When to ask a pediatrician + related tools
-  html+=`<section class="block"><h3>When to ask a pediatrician</h3>
+  html+=`<section class="block" id="bsec-ped"><h3>When to ask a pediatrician</h3>
     <div class="callout safety"><span class="ic" aria-hidden="true" style="display:flex;align-items:center;height:1.2em;color:var(--safe-ink);font-size:1.25rem;line-height:1;">⚕</span><p>Always check in if you're worried, if your child isn't meeting milestones or loses skills, has feeding or growth concerns, or has any urgent symptoms.</p></div></section>`;
   box.innerHTML=html;
   wireNavLinks(box);
+  wireBrowseQuickGuide(box);
+}
+
+/* Wire the mobile quick-guide: smooth-scroll to a section (clearing the sticky
+   headers) and highlight the chip for whichever section is currently in view. */
+function wireBrowseQuickGuide(box){
+  const bar=box.querySelector(".browse-quickguide");
+  if(!bar) return;
+  const scroller=bar.querySelector(".bqg-chips");
+  const chips=[...bar.querySelectorAll(".bqg-chip")];
+  const headerH=()=>{ const h=document.querySelector("header.site"); return h?h.offsetHeight:64; };
+
+  // Pin the bar just beneath the site header, and keep it there on resize/rotate.
+  const setTop=()=>bar.style.setProperty("--bqg-top", headerH()+"px");
+  setTop();
+  window.addEventListener("resize", setTop);
+
+  const sectionFor=id=>box.querySelector("#"+CSS.escape(id));
+  chips.forEach(chip=>{
+    chip.addEventListener("click",()=>{
+      const target=sectionFor(chip.dataset.target);
+      if(!target) return;
+      const offset=headerH()+bar.offsetHeight+12;
+      const y=target.getBoundingClientRect().top+window.pageYOffset-offset;
+      window.scrollTo({top:Math.max(0,y),behavior:"smooth"});
+    });
+  });
+
+  // Keep the active chip centered within the horizontal scroller (no page scroll).
+  function centerChip(chip){
+    const left=chip.offsetLeft-(scroller.clientWidth-chip.offsetWidth)/2;
+    scroller.scrollTo({left:Math.max(0,left),behavior:"smooth"});
+  }
+  // Highlight the chip for the section currently near the top of the viewport.
+  if("IntersectionObserver" in window){
+    const io=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(!e.isIntersecting) return;
+        const id=e.target.id;
+        chips.forEach(c=>{
+          const on=c.dataset.target===id;
+          c.classList.toggle("active",on);
+          if(on) centerChip(c);
+        });
+      });
+    },{rootMargin:`-${headerH()+bar.offsetHeight+20}px 0px -55% 0px`,threshold:0});
+    chips.forEach(c=>{ const s=sectionFor(c.dataset.target); if(s) io.observe(s); });
+  }
 }
 
 /* ============================================================
@@ -2313,13 +2427,34 @@ const TOOL_DEFS = {
     <div class="result empty" id="ac-out">Choose options and select <strong>Find activities</strong>.</div>`}
 };
 
+/* Colored SVG icon chips for the Tools dropdown (bg gradient, border, stroke, paths). */
+const TOOL_ICONS = {
+  meal:{bg:"linear-gradient(160deg,#fdeef0,#f6dde0)",bd:"rgba(158,85,99,.15)",st:"#9e5563",
+    p:'<path d="M3.8 11.2h13.4a6.7 6.7 0 0 1-13.4 0Z"></path><path d="M8 7.4c-.6-.7-.6-1.6 0-2.3M11.4 7.4c-.6-.7-.6-1.6 0-2.3"></path><path d="M19.2 4.6c1.1.6 1.5 2 .9 3.2s-1.9 1.6-3 1"></path><path d="M17.3 8.9 15.8 13"></path>'},
+  mont:{bg:"linear-gradient(160deg,#e3eee0,#cfe2cb)",bd:"rgba(90,120,75,.2)",st:"#5c8050",
+    p:'<path d="M4 20V9.4l8-5.4 8 5.4V20"></path><path d="M3.4 20h17.2"></path><path d="M9.2 20v-4.8h5.6V20"></path>'},
+  daycare:{bg:"linear-gradient(160deg,#f6e6e0,#efd2c8)",bd:"rgba(180,100,70,.2)",st:"#bd6a4d",
+    p:'<rect x="3" y="6.6" width="18" height="10.8" rx="2.2"></rect><path d="M12 10v4M13.4 10.5a1.6 1.6 0 0 0-1.4-.6c-1.6 0-1.6 2-.1 2.1s1.6 2.1-.1 2.1a1.6 1.6 0 0 1-1.4-.6"></path>'},
+  feed:{bg:"linear-gradient(160deg,#e7e7ef,#d6d8e6)",bd:"rgba(90,95,130,.18)",st:"#5f6488",
+    p:'<circle cx="12" cy="12" r="8.2"></circle><circle cx="12" cy="12" r="4.4"></circle><path d="M12 9.4V12l1.7 1"></path>'},
+  ped:{bg:"linear-gradient(160deg,#fdeef0,#f6dde0)",bd:"rgba(158,85,99,.15)",st:"#9e5563",
+    p:'<rect x="5" y="4.6" width="14" height="15.8" rx="2.6"></rect><path d="M9.2 4.6V3.7A1.6 1.6 0 0 1 10.8 2.1h2.4a1.6 1.6 0 0 1 1.6 1.6v.9"></path><path d="M9.7 11.4a2.3 2.3 0 1 1 3.3 2.1c-.8.4-1 .8-1 1.6"></path><path d="M12 17.4h.01"></path>'},
+  act:{bg:"linear-gradient(160deg,#e3eee0,#cfe2cb)",bd:"rgba(90,120,75,.2)",st:"#5c8050",
+    p:'<path d="M9.1 5.4V4.3a2.2 2.2 0 0 1 4.4-.2 1.8 1.8 0 0 0 1.8 1.8h1.1a1.5 1.5 0 0 1 1.5 1.5V8.5a1.8 1.8 0 0 0 1.8 1.8 2.2 2.2 0 0 1-.2 4.4A1.8 1.8 0 0 0 18.7 16.5v1.2a1.5 1.5 0 0 1-1.5 1.5h-2.7a1.8 1.8 0 0 1-1.8-1.8 2.2 2.2 0 0 0-4.4.2 1.8 1.8 0 0 1-1.8 1.6H5.4a1.5 1.5 0 0 1-1.5-1.5v-2.5A1.8 1.8 0 0 0 5.7 13.6a2.2 2.2 0 0 1 .2-4.4A1.8 1.8 0 0 0 3.9 7.4V6.9A1.5 1.5 0 0 1 5.4 5.4Z"></path>'}
+};
+function toolIcon(id,cls){
+  const i=TOOL_ICONS[id];
+  if(!i) return `<span class="dd-emoji">${(TOOL_DEFS[id]||{}).emoji||""}</span>`;
+  return `<span class="tool-ic${cls?" "+cls:""}" style="background:${i.bg};border-color:${i.bd}"><svg viewBox="0 0 24 24" fill="none" stroke="${i.st}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${i.p}</svg></span>`;
+}
+
 /* Populate the nav-bar Tools dropdown from TOOL_DEFS. */
 function buildToolsMenu(){
   const menu=$("#toolsDdMenu");
   if(!menu) return;
   menu.innerHTML = TOOL_ORDER.map(id=>{
     const d=TOOL_DEFS[id];
-    return `<a href="#tool-${id}" role="menuitem"><span class="dd-emoji">${d.emoji}</span>${d.short}</a>`;
+    return `<a href="#tool-${id}" role="menuitem">${toolIcon(id)}${d.short}</a>`;
   }).join("");
 }
 
@@ -2332,11 +2467,11 @@ function renderToolPage(id){
   if(!stage) return;
   const switcher=TOOL_ORDER.map(tid=>{
     const d=TOOL_DEFS[tid];
-    return `<a href="#tool-${tid}" class="tool-switch${tid===id?" active":""}">${d.emoji} ${d.short}</a>`;
+    return `<a href="#tool-${tid}" class="tool-switch${tid===id?" active":""}">${toolIcon(tid,"sm")}${d.short}</a>`;
   }).join("");
   stage.innerHTML=`
     <div class="page-head">
-      <h1>${t.emoji} ${t.title}</h1>
+      <h1>${toolIcon(id,"lg")} ${t.title}</h1>
       <p class="sub">Practical, age-aware tools for everyday parenting questions. Tools give general ideas and estimates. Always confirm feeding, health and safety decisions with your pediatrician.</p>
     </div>
     <p class="muted" style="margin:-6px 0 10px;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--ink-faint)">Switch tool</p>
@@ -2522,34 +2657,34 @@ function toolMeal(){
 function montBand(i){ if(i<=3) return "infant"; if(i<=6) return "baby"; if(i<=9) return "toddler"; return "child"; }
 const MONT_IDEAS={
   infant:{
-    Bedroom:["A securely wall-mounted, shatterproof mirror beside a firm movement mat","A simple high-contrast mobile hung safely out of reach for visual focus","A firm bassinet or low floor bed that follows safe-sleep rules (on the back, no soft bedding)","A low, uncluttered space with soft natural light to support calm and focus","A small basket of two or three simple grasp toys in view, rotated regularly","Muted, calming wall colours and minimal decoration at the baby's eye level","A comfortable feeding chair for you positioned near the bed for night feeds"],
+    Bedroom:["A securely wall-mounted, shatterproof mirror beside a firm movement mat","A simple high-contrast mobile hung safely out of reach for visual focus","A firm bassinet or low floor bed that follows safe-sleep rules (on the back, no soft bedding)","A low, uncluttered space with soft natural light to support calm and focus","A small basket of two or three simple grasp toys in view, rotated regularly","Muted, calming wall colors and minimal decoration at the baby's eye level","A comfortable feeding chair for you positioned near the bed for night feeds"],
     Kitchen:["A safe spot (mat or seat) where baby can watch you cook from a distance","Narrate what you are doing to build language; no child kitchen tasks yet","Keep cords, hot items and small objects well out of reach","A floor mat or bouncer placed so baby can see your face while you work","A few safe wooden spoons in a basket to hold and mouth under supervision","A predictable mealtime routine so the space feels calm and familiar","A low basket of unbreakable cups baby can watch you use"],
     Bathroom:["A warm changing area at adult height with everything within your reach","A soft towel and one or two simple objects to name during diapering","Never leave baby unattended on a changing table or near water","A low shelf beside the changing area with wipes and a fresh outfit within your reach","A soft, non-slip mat on the floor for safety around water","A small mirror at the changing area so baby begins to notice their reflection","Warm the room first so baby stays comfortable and relaxed"],
     "Play area":["A firm mat on the floor for supervised tummy time and free movement","One or two simple grasping objects in view, rotated often","A low mirror to encourage looking, reaching and lifting the head","A wooden play gym or simple mobile hung safely just within reach","Rotate one or two objects at a time so the space stays simple and inviting","Clear, soft flooring with no small parts within reach","A soft bolster or cushion for supported tummy time"],
-    Entryway:["A basket at adult height for going-out essentials, to keep transitions calm","A gentle, predictable routine as you dress baby for outings","Self-dressing setups come later; for now keep it calm and simple","A hook or basket at your height for the nappy bag and essentials","A bench for you to sit and gently put on baby's shoes and coat","Keep the space clear so departures feel smooth and unhurried","Name each step as you dress baby to build early language"],
+    Entryway:["A basket at adult height for going-out essentials, to keep transitions calm","A gentle, predictable routine as you dress baby for outings","Self-dressing setups come later; for now keep it calm and simple","A hook or basket at your height for the diaper bag and essentials","A bench for you to sit and gently put on baby's shoes and coat","Keep the space clear so departures feel smooth and unhurried","Name each step as you dress baby to build early language"],
     "Dining area":["Hold or wear baby during family meals so they feel included","Narrate mealtimes to build language; no solids or self-feeding before about 6 months","A comfortable feeding chair for you, with support nearby","A supportive high chair ready for around six months, pulled to the family table","Their own small bib and cloth kept within your reach","Sit baby facing the family so they feel part of mealtimes","Keep hot food and drinks well away from baby's reach"]
   },
   baby:{
     Bedroom:["A low, open shelf with 2 to 3 rotated toys baby can choose and reach","A securely mounted pull-up bar beside a low mirror for cruising practice","A floor bed, where safe and fully childproofed, so baby can move on and off","A small basket of board books at floor level for baby to choose","Soft, safe flooring so baby can move on and off the floor bed freely","A simple basket baby can begin dropping toys into when finished","A low mirror beside the movement space for pulling up and looking"],
-    Kitchen:["A low, baby-safe cupboard or basket with a few wooden spoons and cups to explore","A supported seat where baby can watch and 'help' from a safe distance","Offer a spoon and let baby practice self-feeding soft foods (supervised)","A low drawer or basket baby can open with a few safe utensils","A weaning spoon and small open cup to practise with under supervision","A damp cloth baby can hold to 'wipe' their tray after meals","A safe spot to stand and watch you prepare food up close"],
-    Bathroom:["A low basket with their own washcloth to hold and explore","Let baby pour and splash with a small cup in the bath (always supervised)","A non-slip mat; never leave baby alone near water","A few floating cups for pouring and scooping in the bath, always supervised","A low hook so baby can begin reaching for their own flannel","Their own small towel kept within reach","Keep the floor clear and dry to prevent slips"],
+    Kitchen:["A low, baby-safe cabinet or basket with a few wooden spoons and cups to explore","A supported seat where baby can watch and 'help' from a safe distance","Offer a spoon and let baby practice self-feeding soft foods (supervised)","A low drawer or basket baby can open with a few safe utensils","A weaning spoon and small open cup to practice with under supervision","A damp cloth baby can hold to 'wipe' their tray after meals","A safe spot to stand and watch you prepare food up close"],
+    Bathroom:["A low basket with their own washcloth to hold and explore","Let baby pour and splash with a small cup in the bath (always supervised)","A non-slip mat; never leave baby alone near water","A few floating cups for pouring and scooping in the bath, always supervised","A low hook so baby can begin reaching for their own washcloth","Their own small towel kept within reach","Keep the floor clear and dry to prevent slips"],
     "Play area":["A low, front-facing shelf with a few activities, rotated to keep it simple","A pull-up bar and sturdy low furniture for cruising","Open, cleared floor space for crawling with hazards removed","A shallow basket of balls or rolling toys to chase as baby becomes mobile","Low, sturdy furniture arranged to encourage safe cruising","Two or three activities out at a time, swapped often to keep interest","A soft floor cushion or bolster for supported sitting and play"],
     Entryway:["A low basket for shoes as baby begins to take part","Sit baby on a low bench while you put on shoes, naming each step","Keep it simple; full self-dressing comes in the toddler years","A basket at floor level for their shoes to begin taking part","A mirror low enough for baby to notice themselves before going out","A slow, predictable routine to ease transitions","A hook at your height for baby's coat and bag"],
     "Dining area":["A low weaning table and chair, or a high chair pulled to the family table","Their own small bowl, spoon and open cup for supervised self-feeding","Let baby help wipe their tray with a small cloth","A weaning table and chair sized so baby's feet reach the floor","A cloth for baby to help wipe up spills","A low shelf nearby with a spare bib and cloth within reach","Their own unbreakable bowl and open cup for practice"]
   },
   toddler:{
-    Bedroom:["A floor bed and a low, front-facing shelf with a few rotated toys","A small basket or low rod with 2 to 3 clothing choices for self-dressing","A low mirror and a basket for putting toys away","A low, front-facing bookshelf with a few favourite books","A laundry basket so they can help put clothes away","A low hook for their dressing gown or coat","A simple setup so they can help make their own bed"],
+    Bedroom:["A floor bed and a low, front-facing shelf with a few rotated toys","A small basket or low rod with 2 to 3 clothing choices for self-dressing","A low mirror and a basket for putting toys away","A low, front-facing bookshelf with a few favorite books","A laundry basket so they can help put clothes away","A low hook for their bathrobe or coat","A simple setup so they can help make their own bed"],
     Kitchen:["A sturdy learning tower or step stool to safely reach the counter (supervised)","A low drawer with their cup, bowl, plate and child-safe utensils","Simple real tasks: washing veg, stirring, spreading with a dull spreader","A low shelf with their own placemat, napkin and cloth","Pouring their own water from a small, light jug","A child-safe knife for spreading and cutting soft foods, supervised","A basket of cloths so they can wipe up their own spills"],
-    Bathroom:["A step stool at the sink and a low hook for their towel","Their own toothbrush, comb and washcloth within reach","A small basket for potty-learning supplies if you are starting","A small jug or cup to help with rinsing during handwashing","A low mirror so they can check their own face and teeth","A basket holding their comb, toothbrush and flannel","A sturdy step stool to reach the sink safely"],
+    Bathroom:["A step stool at the sink and a low hook for their towel","Their own toothbrush, comb and washcloth within reach","A small basket for potty-learning supplies if you are starting","A small jug or cup to help with rinsing during handwashing","A low mirror so they can check their own face and teeth","A basket holding their comb, toothbrush and washcloth","A sturdy step stool to reach the sink safely"],
     "Play area":["A low shelf with a few front-facing activities, rotated regularly","Practical-life trays (pouring, scooping, transferring) with close supervision","A cleanup basket and a child-sized broom or cloth","A child-sized broom, dustpan and cloth for real cleaning","Trays with clear beginning-to-end tasks like posting or threading","A cushion or small mat to define a calm work space","4 to 6 activities out at a time, rotated weekly to keep interest"],
     Entryway:["Low hooks for coat and bag at child height","A bench and basket so they can put on and store their own shoes","A mirror at child height to check themselves before going out","A basket for hats and gloves at their height","A simple picture checklist of what to bring","A spot for their own bag they can carry themselves","A low mirror to check themselves before heading out"],
     "Dining area":["A child-sized table and chair, or a learning tower at the family table","A small pitcher for self-pouring and a low shelf with placemat and napkin","Let them carry their unbreakable dishes to and from the table","A small jug so they can pour their own drink","A job like laying the table or clearing their plate","A cloth within reach so they can wipe their own space","A low shelf with their placemat, napkin and unbreakable dishes"]
   },
   child:{
-    Bedroom:["A low wardrobe rod or labeled drawers so they choose and put away clothes","A low shelf for books and a few activities they keep tidy themselves","A simple setup so they can make their own bed","A low bookshelf they organise and tidy themselves","A simple laundry basket they use independently","A clock or visual routine chart to manage their morning","Labelled drawers so dressing and tidying are easy to do alone"],
+    Bedroom:["A low closet rod or labeled drawers so they choose and put away clothes","A low shelf for books and a few activities they keep tidy themselves","A simple setup so they can make their own bed","A low bookshelf they organize and tidy themselves","A simple laundry basket they use independently","A clock or visual routine chart to manage their morning","Labeled drawers so dressing and tidying are easy to do alone"],
     Kitchen:["A step stool or learning tower and access to their own dishes and snacks","Real practical-life tools: a child-safe knife, peeler and small jug","A job they own, like setting the table or washing produce","A low shelf with their own snacks they can choose from","A regular job they own, like washing produce or setting the table","A cloth and small dustpan so they clean up after themselves","Their own dishes and cup kept within reach"],
-    Bathroom:["Everything for handwashing, teeth and hair within reach, with a step stool","A mirror at their height and a hook for their towel","A small basket so they manage their own routine","Their brush, comb and flannel kept within reach","A small basket to keep their own toiletries organised","A step stool if needed to reach the sink comfortably","A simple visual reminder of their morning and bedtime routine"],
-    "Play area":["A tidy low shelf with rotated activities they choose and return","Practical-life and art materials they can access and clean up alone","A clear cleanup station with labeled baskets","Art and practical-life materials they can access and clean up alone","Labelled baskets so tidying up is clear and independent","A defined work space, like a small table or mat","Activities they rotate and return themselves"],
+    Bathroom:["Everything for handwashing, teeth and hair within reach, with a step stool","A mirror at their height and a hook for their towel","A small basket so they manage their own routine","Their brush, comb and washcloth kept within reach","A small basket to keep their own toiletries organized","A step stool if needed to reach the sink comfortably","A simple visual reminder of their morning and bedtime routine"],
+    "Play area":["A tidy low shelf with rotated activities they choose and return","Practical-life and art materials they can access and clean up alone","A clear cleanup station with labeled baskets","Art and practical-life materials they can access and clean up alone","Labeled baskets so tidying up is clear and independent","A defined work space, like a small table or mat","Activities they rotate and return themselves"],
     Entryway:["Their own hooks, a shoe spot and a basket for hat and gloves","A bench to sit and manage shoes and coat themselves","A small mirror and a simple checklist for getting out the door","Their own hooks and a shoe spot they manage themselves","A basket for hat and gloves at their height","A simple checklist to get out of the door independently","A mirror to check themselves before leaving"],
     "Dining area":["A reachable spot at the family table and a way to get their own water","A job in setting and clearing the table","A low shelf with placemats, napkins and unbreakable dishes they manage","Their own water station they can reach and use","A cloth so they can wipe their own place after meals","A regular table job they take responsibility for","Unbreakable dishes they carry and put away themselves"]
   }
@@ -2695,7 +2830,7 @@ const ACT_IDEAS={
     Independence:["Responsive feeding, following their hunger cues","Predictable, calm routines they can start to anticipate","Time on their back to move freely and self-soothe","Pausing to let them respond before picking them up","A consistent, unhurried bedtime rhythm"]
   },
   baby:{
-    "Practical life":["Holding a spoon or cup during meals","Self-feeding soft finger foods (supervised)","Passing a cloth or object between both hands","Helping hold a flannel at bath time","Dropping a napkin into a basket after eating"],
+    "Practical life":["Holding a spoon or cup during meals","Self-feeding soft finger foods (supervised)","Passing a cloth or object between both hands","Helping hold a washcloth at bath time","Dropping a napkin into a basket after eating"],
     Sensorial:["A treasure basket of safe household textures","Stacking cups to explore in and out","Crinkly fabric and a safe baby mirror","A touch-and-feel texture book","Rolling a lightly rattling ball"],
     Language:["Naming objects and body parts as you point","Reading sturdy board books together","Peekaboo and songs with simple hand motions","Copying the sounds they make back to them","Pointing to and naming pictures in a book"],
     "Gross motor":["Floor time to roll, sit and pivot","Reaching across the midline for a toy","Supported practice pulling up to stand","Crawling toward a toy just out of reach","Cruising along low, stable furniture"],
@@ -2708,15 +2843,15 @@ const ACT_IDEAS={
     Language:["Naming real objects together","Reading simple, realistic picture books","Singing songs with hand motions","Naming animals and the sounds they make","Following a simple one-step instruction as a game"],
     "Gross motor":["Walking and climbing low, stable cushions (supervised)","Pushing a weighted walker wagon","Rolling and kicking a large ball","Walking up and down a low step with help","Dancing and moving to music"],
     "Fine motor":["Posting coins/discs into a slot","Stacking a few wooden blocks","Threading large beads (supervised, choking-safe)","Turning knobs and opening simple lids","Scribbling with a chunky crayon"],
-    Independence:["Choosing between two outfits","Putting toys back on a low shelf","Hanging a coat on a low hook","Taking off socks and shoes themselves","Putting a nappy in the bin"]
+    Independence:["Choosing between two outfits","Putting toys back on a low shelf","Hanging a coat on a low hook","Taking off socks and shoes themselves","Putting a diaper in the trash"]
   },
   preschool:{
     "Practical life":["Pouring their own drink from a small jug","Spreading butter or jam on toast","Washing and drying unbreakable dishes","Peeling a banana or a boiled egg","Sweeping crumbs with a small dustpan and brush"],
-    Sensorial:["Sorting and grading objects by size or shade","Matching sounds in a listening game","Guessing textures with eyes closed","Ordering colour cards from light to dark","Matching smells or tastes in a guessing game"],
-    Language:["Telling a story about their day","Simple letter and beginning-sound games","'Reading' a favourite book aloud from memory","Rhyming games and silly word play","Naming the letters in their own name"],
+    Sensorial:["Sorting and grading objects by size or shade","Matching sounds in a listening game","Guessing textures with eyes closed","Ordering color cards from light to dark","Matching smells or tastes in a guessing game"],
+    Language:["Telling a story about their day","Simple letter and beginning-sound games","'Reading' a favorite book aloud from memory","Rhyming games and silly word play","Naming the letters in their own name"],
     "Gross motor":["Balancing along a line or low beam","Riding a balance bike or tricycle","Hopping on one foot and jumping games","Throwing and catching a soft ball","Climbing at the playground with supervision"],
     "Fine motor":["Threading beads and using lacing cards","Drawing shapes and cutting with child-safe scissors","Buttoning, zipping and simple sewing cards","Using tongs to move pompoms","Rolling and shaping playdough"],
-    Independence:["Dressing and undressing with little help","Setting and clearing their own place","Tidying toys into labelled bins","Washing hands and brushing teeth with a reminder","Putting on their own shoes and coat"]
+    Independence:["Dressing and undressing with little help","Setting and clearing their own place","Tidying toys into labeled bins","Washing hands and brushing teeth with a reminder","Putting on their own shoes and coat"]
   },
   school:{
     "Practical life":["Making a simple snack or sandwich start to finish","Measuring ingredients for an easy recipe","Sorting laundry and folding simple items","Setting the whole table for a meal","Packing their own lunch or bag"],
